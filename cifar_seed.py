@@ -19,9 +19,16 @@ train_imgs, train_lbls, val_imgs, val_lbls = build_dataset(device=device)
 n_train = len(train_lbls)
 n_val = len(val_lbls)
 
+if len(sys.argv) < 4:
+  print('usage: program results.json start_seed nb_seeds')
+
+start_seed = int(sys.argv[2])
+nb_seed = int(sys.argv[3])
+
+print('doing from {} to {}'.format(start_seed, start_seed+nb_seed))
 
 data = []
-for s in range(100):
+for s in range(start_seed, start_seed+nb_seed):
   torch.manual_seed(s)
   np.random.seed(s)
 
@@ -110,7 +117,8 @@ for s in range(100):
       va.append(100.*torch.stack(val_acc).mean().item())
       tt.append(v_stop - start)
     sched.step()
-  d = { 'train_loss': tl,
+  d = { 'seed': s,
+        'train_loss': tl,
         'val_loss': vl,
         'val_acc': va,
         'time': tt}
