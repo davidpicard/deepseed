@@ -37,7 +37,7 @@ sched = optim.lr_scheduler.LambdaLR(optimizer, lr)
 augment = Augment()
 augment.to(device).half()
 
-t_start = time.start()
+t_start = time.time()
 for e in range(epoch):  # loop over the dataset multiple times
   start = time.time()
 
@@ -104,6 +104,6 @@ for e in range(epoch):  # loop over the dataset multiple times
   print('{} train loss {:5.02f} val loss {:5.02f} val acc {:5.02f} time a:{:5.03f} t:{:5.03f}, v:{:5.03f}, t1:{:5.03f}, t2:{:5.03f}, t3:{:5.03f} '.format(
       e, running_loss, torch.stack(val_loss).mean(), 100.*torch.stack(val_acc).mean(), (a_stop-start), (t_stop-start), (v_stop - start), t1, t2, t3))
   sched.step()
-print('Finished Training in {:5.03f}'.format(time.stop()-t_start))
+print('Finished Training in {:5.03f}'.format(time.time()-t_start))
 
 
