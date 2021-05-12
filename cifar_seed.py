@@ -127,8 +127,8 @@ for s in range(start_seed, start_seed+nb_seed):
   print('{} Finished Training in {:5.03f}  train loss {:5.02f} val loss {:5.02f} val acc {:5.02f}'.format(s, time.time()-t_start, tl[-1], vl[-1], va[-1]))
   data.append(d)
 
-filename = sys.argv[1]
-with open(filename, 'w') as fp:
-  json.dump(data, fp)
+  filename = sys.argv[1]
+  with open(filename, 'w') as fp:
+    json.dump(data, fp)
 
 
