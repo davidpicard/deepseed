@@ -21,6 +21,7 @@ n_val = len(val_lbls)
 
 if len(sys.argv) < 4:
   print('usage: program results.json start_seed nb_seeds')
+  sys.exit(-1)
 
 start_seed = int(sys.argv[2])
 nb_seed = int(sys.argv[3])
