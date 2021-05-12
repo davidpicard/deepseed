@@ -19,7 +19,7 @@ def build_dataset(device="cuda"):
     for i, l in trainset:
         img.append(i.unsqueeze(0))
         lbl.append(l)
-    train_imgs = torch.cat(img)
+    train_imgs = torch.cat(img).half()
     train_lbls = torch.Tensor(lbl).long().to(device)
 
     transform = transforms.Compose([
