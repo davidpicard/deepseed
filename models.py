@@ -9,7 +9,8 @@ def conv_bn(channels_in, channels_out, kernel_size=3, stride=1, padding=1, group
     if bn:
         op.append(nn.BatchNorm2d(channels_out))
     if activation:
-        op.append(nn.ReLU(inplace=True))
+        # op.append(nn.ReLU(inplace=True))
+        op.append(nn.CELU(alpha=0.1, inplace=True))
     return nn.Sequential(*op)
 
 
