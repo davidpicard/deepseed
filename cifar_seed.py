@@ -7,7 +7,7 @@ from datasets import *
 
 batch_size = 500
 v_batch_size = 100
-epoch = 15
+epoch = 20
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 torch.backends.cudnn.benchmark = True
