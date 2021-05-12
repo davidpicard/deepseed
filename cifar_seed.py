@@ -1,6 +1,8 @@
 import torch
 from torch import optim
 import time
+import json
+import sys
 
 from models import *
 from datasets import *
@@ -19,7 +21,7 @@ n_val = len(val_lbls)
 
 
 data = []
-for s in range(5):
+for s in range(100):
   torch.manual_seed(s)
   np.random.seed(s)
 
@@ -65,14 +67,10 @@ for s in range(5):
     a_train_imgs = a_train_imgs[perm, ...].contiguous()
     a_train_lbls = train_lbls[perm].contiguous()
 
-    # a_stop = time.time()
 
     net.train()
     running_loss = []
     perm = torch.randperm(n_train)
-    # t1 = 0
-    # t2 = 0
-    # t3 = 0
     for i in range(n_train//batch_size):
       # s = time.time()
       # get the inputs; data is a list of [inputs, labels]
@@ -87,22 +85,12 @@ for s in range(5):
       loss = criterion(outputs, labels)
       loss2 = criterion2(outputs, labels)
       loss = loss + 2*loss2
-      # torch.cuda.synchronize()
-      # t1 += time.time() - s
       loss.backward()
-      # torch.cuda.synchronize()
-      # t2 += time.time() - s
       optimizer.step()
-      # torch.cuda.synchronize()
-      # t3 += time.time() - s
 
       # print statistics
       running_loss.append(loss)
     running_loss = torch.stack(running_loss).mean().item()
-    # t_stop = time.time()
-    # t1 /= n_train//batch_size
-    # t2 /= n_train//batch_size
-    # t3 /= n_train//batch_size
 
     if e == 0 or e%5 == 1:
       net.eval()
@@ -117,10 +105,6 @@ for s in range(5):
         val_acc.append((outputs.argmax(dim=1) == labels).sum()/labels.shape[0])
 
       v_stop = time.time()
-      # print('{} train loss {:5.02f} val loss {:5.02f} val acc {:5.02f} time a:{:5.03f} t:{:5.03f}, v:{:5.03f}, t1:{:5.03f}, t2:{:5.03f}, t3:{:5.03f} '.format(
-        # e, running_loss, torch.stack(val_loss).mean(), 100.*torch.stack(val_acc).mean(), (a_stop-start), (t_stop-start), (v_stop - start), t1, t2, t3))
-      # print('{} train loss {:5.02f} val loss {:5.02f} val acc {:5.02f} time v:{:5.03f}'.format(
-      #   e, running_loss, torch.stack(val_loss).mean(), 100.*torch.stack(val_acc).mean(), (v_stop - start)))
       tl.append(running_loss)
       vl.append(torch.stack(val_loss).mean().item())
       va.append(100.*torch.stack(val_acc).mean().item())
@@ -130,9 +114,11 @@ for s in range(5):
         'val_loss': vl,
         'val_acc': va,
         'time': tt}
-  print('Finished Training in {:5.03f}  train loss {:5.02f} val loss {:5.02f} val acc {:5.02f}'.format(time.time()-t_start, tl[-1], vl[-1], va[-1]))
+  print('{} Finished Training in {:5.03f}  train loss {:5.02f} val loss {:5.02f} val acc {:5.02f}'.format(s, time.time()-t_start, tl[-1], vl[-1], va[-1]))
   data.append(d)
 
-print(data)
+filename = sys.argv[1]
+with open(filename, 'w') as fp:
+  json.dump(data, fp)
 
 
