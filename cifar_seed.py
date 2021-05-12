@@ -15,9 +15,6 @@ epoch = 22
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 torch.backends.cudnn.benchmark = True
 
-train_imgs, train_lbls, val_imgs, val_lbls = build_dataset(device=device)
-n_train = len(train_lbls)
-n_val = len(val_lbls)
 
 if len(sys.argv) < 4:
   print('usage: program results.json start_seed nb_seeds')
@@ -27,6 +24,10 @@ start_seed = int(sys.argv[2])
 nb_seed = int(sys.argv[3])
 
 print('doing from {} to {}'.format(start_seed, start_seed+nb_seed))
+
+train_imgs, train_lbls, val_imgs, val_lbls = build_dataset(device=device)
+n_train = len(train_lbls)
+n_val = len(val_lbls)
 
 data = []
 for s in range(start_seed, start_seed+nb_seed):
