@@ -26,7 +26,7 @@ for layer in net.modules():
     #   layer.weight.data.fill_(1.0)
 
 criterion = nn.CrossEntropyLoss()
-optimizer = optim.SGD(net.parameters(), lr=0.2, momentum=0.9, nesterov=True, weight_decay=0.005)
+optimizer = optim.SGD(net.parameters(), lr=0.2, momentum=0.9, nesterov=True, weight_decay=0.001)
 
 def lr(e):
   if e < 4:
