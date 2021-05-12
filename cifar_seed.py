@@ -7,7 +7,7 @@ from datasets import *
 
 batch_size = 500
 v_batch_size = 100
-epoch = 14
+epoch = 15
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 torch.backends.cudnn.benchmark = True
@@ -31,7 +31,7 @@ optimizer = optim.SGD(net.parameters(), lr=0.1, momentum=0.9, nesterov=True)
 def lr(e):
   if e < 5:
     return 0.5*e/4. + 0.01
-  return 0.5*(15-e)/15. + 0.01
+  return 0.5*(20-e)/15. + 0.01
 sched = optim.lr_scheduler.LambdaLR(optimizer, lr)
 
 augment = Augment()
