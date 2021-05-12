@@ -89,7 +89,7 @@ for e in range(epoch):  # loop over the dataset multiple times
   t2 /= n_train//batch_size
   t3 /= n_train//batch_size
 
-  net.eval()
+  # net.eval()
   val_loss = []
   val_acc = []
   for i in range(n_val//v_batch_size):
