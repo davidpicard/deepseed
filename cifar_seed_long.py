@@ -51,7 +51,9 @@ for s in range(start_seed, start_seed+nb_seed):
   def lr(e):
     if e < 4:
       return 0.5*e/3. + 0.01
-    return 0.5*(45-e)/43. + 0.01
+    elif e < 22:
+      return 0.5*(22-e)/19. + 0.01
+    return 0.01
   sched = optim.lr_scheduler.LambdaLR(optimizer, lr)
 
   augment = Augment()
