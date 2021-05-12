@@ -56,5 +56,5 @@ def build_network(num_class=10):
     nn.AdaptiveMaxPool2d((1, 1)),
     nn.Flatten(),
     nn.Linear(512, num_class, bias=False),
-    Mul(0.2)
+    Mul(0.1)
   )
