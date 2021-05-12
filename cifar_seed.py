@@ -4,6 +4,7 @@ import time
 
 from models import *
 from datasets import *
+from loss import *
 
 batch_size = 500
 v_batch_size = 100
@@ -28,6 +29,7 @@ for layer in net.modules():
     layer.momentum = 0.1
 
 criterion = nn.CrossEntropyLoss()
+criterion2 = CrossEntropyLabelSmooth(num_classes=10, epsilon=0.2)
 optimizer = optim.SGD(net.parameters(), lr=0.2, momentum=0.9, nesterov=True, weight_decay=0.001)
 
 def lr(e):
@@ -74,6 +76,8 @@ for e in range(epoch):  # loop over the dataset multiple times
     # forward + backward + optimize
     outputs = net(inputs)
     loss = criterion(outputs, labels)
+    loss2 = criterion2(outputs, labels)
+    loss = loss + loss2
     # torch.cuda.synchronize()
     # t1 += time.time() - s
     loss.backward()
