@@ -56,14 +56,14 @@ for e in range(epoch):  # loop over the dataset multiple times
   a_train_imgs = a_train_imgs[perm, ...].contiguous()
   a_train_lbls = train_lbls[perm].contiguous()
 
-  a_stop = time.time()
+  # a_stop = time.time()
 
   net.train()
   running_loss = []
   perm = torch.randperm(n_train)
-  t1 = 0
-  t2 = 0
-  t3 = 0
+  # t1 = 0
+  # t2 = 0
+  # t3 = 0
   for i in range(n_train//batch_size):
     # s = time.time()
     # get the inputs; data is a list of [inputs, labels]
@@ -90,10 +90,10 @@ for e in range(epoch):  # loop over the dataset multiple times
     # print statistics
     running_loss.append(loss)
   running_loss = torch.stack(running_loss).mean().item()
-  t_stop = time.time()
-  t1 /= n_train//batch_size
-  t2 /= n_train//batch_size
-  t3 /= n_train//batch_size
+  # t_stop = time.time()
+  # t1 /= n_train//batch_size
+  # t2 /= n_train//batch_size
+  # t3 /= n_train//batch_size
 
   net.eval()
   val_loss = []
@@ -107,8 +107,11 @@ for e in range(epoch):  # loop over the dataset multiple times
     val_acc.append((outputs.argmax(dim=1) == labels).sum()/labels.shape[0])
 
   v_stop = time.time()
-  print('{} train loss {:5.02f} val loss {:5.02f} val acc {:5.02f} time a:{:5.03f} t:{:5.03f}, v:{:5.03f}, t1:{:5.03f}, t2:{:5.03f}, t3:{:5.03f} '.format(
-      e, running_loss, torch.stack(val_loss).mean(), 100.*torch.stack(val_acc).mean(), (a_stop-start), (t_stop-start), (v_stop - start), t1, t2, t3))
+  if e == 0 or e%5 == 1:
+    # print('{} train loss {:5.02f} val loss {:5.02f} val acc {:5.02f} time a:{:5.03f} t:{:5.03f}, v:{:5.03f}, t1:{:5.03f}, t2:{:5.03f}, t3:{:5.03f} '.format(
+      # e, running_loss, torch.stack(val_loss).mean(), 100.*torch.stack(val_acc).mean(), (a_stop-start), (t_stop-start), (v_stop - start), t1, t2, t3))
+    print('{} train loss {:5.02f} val loss {:5.02f} val acc {:5.02f} time v:{:5.03f}'.format(
+      e, running_loss, torch.stack(val_loss).mean(), 100.*torch.stack(val_acc).mean(), (v_stop - start)))
   sched.step()
 print('Finished Training in {:5.03f}'.format(time.time()-t_start))
 
