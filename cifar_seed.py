@@ -22,8 +22,8 @@ net.to(device).half()
 for layer in net.modules():
   if isinstance(layer, nn.BatchNorm2d):
     layer.float()
-    # if hasattr(layer, 'weight') and layer.weight is not None:
-    #   layer.weight.data.fill_(1.0)
+    if hasattr(layer, 'weight') and layer.weight is not None:
+      layer.weight.data.fill_(1.0)
 
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.SGD(net.parameters(), lr=0.2, momentum=0.9, nesterov=True, weight_decay=0.001)
