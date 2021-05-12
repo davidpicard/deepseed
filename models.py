@@ -34,7 +34,7 @@ class Mul(torch.nn.Module):
 def build_network(num_class=10):
   return nn.Sequential(
     conv_bn(3, 64, kernel_size=3, stride=1, padding=1),
-    # nn.MaxPool2d(2),
+    nn.MaxPool2d(2),
 
     conv_bn(64, 128, kernel_size=3, stride=1, padding=1),
     nn.MaxPool2d(2),
@@ -46,15 +46,15 @@ def build_network(num_class=10):
     conv_bn(128, 256, kernel_size=3, stride=1, padding=1),
     nn.MaxPool2d(2),
 
-    conv_bn(256, 256, kernel_size=3, stride=1, padding=1),
+    conv_bn(256, 512, kernel_size=3, stride=1, padding=1),
     nn.MaxPool2d(2),
     Residual(nn.Sequential(
-        conv_bn(256, 256),
-        conv_bn(256, 256),
+        conv_bn(512, 512),
+        conv_bn(512, 512),
     )),
 
     nn.AdaptiveMaxPool2d((1, 1)),
     nn.Flatten(),
-    nn.Linear(256, num_class, bias=False),
-    Mul(0.1)
+    nn.Linear(512, num_class, bias=False),
+    Mul(0.2)
   )
