@@ -29,9 +29,9 @@ criterion = nn.CrossEntropyLoss()
 optimizer = optim.SGD(net.parameters(), lr=0.3, momentum=0.9, nesterov=True)
 
 def lr(e):
-  if e < 5:
-    return 0.5*e/4. + 0.01
-  return 0.5*(20-e)/16. + 0.01
+  if e < 4:
+    return 0.5*e/3. + 0.01
+  return 0.5*(20-e)/17. + 0.01
 sched = optim.lr_scheduler.LambdaLR(optimizer, lr)
 
 augment = Augment()
