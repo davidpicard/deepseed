@@ -72,7 +72,6 @@ for e in range(epoch):  # loop over the dataset multiple times
 
     # forward + backward + optimize
     outputs = net(inputs)
-    print(outputs[0,...])
     loss = criterion(outputs, labels)
     loss2 = criterion2(outputs, labels)
     loss = loss + 2*loss2
