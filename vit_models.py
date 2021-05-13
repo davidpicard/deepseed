@@ -29,7 +29,7 @@ class ViT(nn.Module):
         self.fc = nn.Sequential(
             nn.LayerNorm(hidden),
             nn.Linear(hidden, num_classes), # for cls_token
-            Mul(0.1)
+            Mul(0.01)
         )
 
 
