@@ -3,7 +3,7 @@ from torch import nn
 
 
 class ViT(nn.Module):
-    def __init__(self, num_classes:int=10, img_size:int=32, patch:int=8, dropout:float=0.1, num_layers:int=4, hidden:int=128, mlp_hidden:int=128*4, head:int=4):
+    def __init__(self, num_classes:int=10, img_size:int=32, patch:int=4, dropout:float=0.1, num_layers:int=4, hidden:int=128, mlp_hidden:int=128*4, head:int=4):
         super(ViT, self).__init__()
         # hidden=384
 
