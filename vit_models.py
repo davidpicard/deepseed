@@ -85,8 +85,8 @@ class ViT(nn.Module):
         enc_list = [TransformerEncoder(hidden,mlp_hidden=mlp_hidden, dropout=dropout, head=head) for _ in range(num_layers)]
         self.enc = nn.Sequential(*enc_list)
         self.fc = nn.Sequential(
-            # nn.LayerNorm(hidden),
-            nn.BatchNorm1d(hidden),
+            nn.LayerNorm(hidden),
+            # nn.BatchNorm1d(hidden),
             nn.Linear(hidden, num_classes), # for cls_token
             Mul(0.1)
         )
