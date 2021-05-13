@@ -26,7 +26,7 @@ for layer in net.modules():
     if hasattr(layer, 'weight') and layer.weight is not None:
       layer.weight.data.fill_(1.0)
     layer.eps = 0.0001
-    layer.momentum = 0.2
+    layer.momentum = 0.3
   if isinstance(layer, torch.nn.Linear) and hasattr(layer, 'weight'):
     # torch.nn.init.kaiming_uniform_(layer.weight, mode='fan_in', nonlinearity='linear')
     # torch.nn.init.orthogonal_(layer.weight, gain=0.5)
