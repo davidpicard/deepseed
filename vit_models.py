@@ -2,6 +2,17 @@ import torch
 from torch import nn
 
 
+
+class Mul(torch.nn.Module):
+    def __init__(self, weight):
+        super(Mul, self).__init__()
+        self.weight = weight
+
+    def forward(self, x):
+        return x * self.weight
+
+
+
 class ViT(nn.Module):
     def __init__(self, num_classes:int=10, img_size:int=32, patch:int=4, dropout:float=0.1, num_layers:int=4, hidden:int=128, mlp_hidden:int=128*4, head:int=4):
         super(ViT, self).__init__()
@@ -17,7 +28,8 @@ class ViT(nn.Module):
         self.enc = nn.TransformerEncoder(nn.TransformerEncoderLayer(hidden, head, mlp_hidden, dropout=dropout, activation="relu"), num_layers, nn.LayerNorm(hidden))
         self.fc = nn.Sequential(
             nn.LayerNorm(hidden),
-            nn.Linear(hidden, num_classes) # for cls_token
+            nn.Linear(hidden, num_classes), # for cls_token
+            Mul(0.1)
         )
 
 
