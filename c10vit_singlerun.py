@@ -24,7 +24,7 @@ net.to(device).half()
 
 criterion = nn.CrossEntropyLoss()
 criterion2 = CrossEntropyLabelSmooth(num_classes=10, epsilon=0.2)
-optimizer = optim.SGD(net.parameters(), lr=0.0001, momentum=0.9, nesterov=True, weight_decay=0.001)
+optimizer = optim.SGD(net.parameters(), lr=0.01, momentum=0.9, nesterov=True, weight_decay=0.001)
 
 def lr(e):
   if e < 4:
