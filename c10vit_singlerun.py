@@ -25,7 +25,7 @@ net.to(device).half()
 criterion = nn.CrossEntropyLoss()
 criterion2 = CrossEntropyLabelSmooth(num_classes=10, epsilon=0.2)
 # optimizer = optim.SGD(net.parameters(), lr=0.5, momentum=0.9, nesterov=True, weight_decay=0.0)
-optimizer = optim.Adam(net.parameters(), lr=0.005, weight_decay=0.0)
+optimizer = optim.Adam(net.parameters(), lr=0.0005, weight_decay=0.0)
 
 def lr(e):
   if e < 5:
