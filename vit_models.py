@@ -87,6 +87,7 @@ class ViT(nn.Module):
         self.enc = nn.Sequential(*enc_list)
         self.fc = nn.Sequential(
             # nn.LayerNorm(hidden),
+            Mul(0.1),
             # nn.BatchNorm1d(hidden),
             nn.Linear(hidden, num_classes), # for cls_token
             Mul(0.3)
