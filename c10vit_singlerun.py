@@ -28,10 +28,9 @@ for layer in net.modules():
     layer.eps = 0.00001
     layer.momentum = 0.1
   if isinstance(layer, torch.nn.Linear) and hasattr(layer, 'weight'):
-    # torch.nn.init.kaiming_uniform_(module.weight, a=math.sqrt(5))  # original
     # torch.nn.init.kaiming_uniform_(layer.weight, mode='fan_in', nonlinearity='linear')
     # torch.nn.init.orthogonal_(layer.weight, gain=1.)
-    torch.nn.init.xavier_uniform_(layer.weight, gain=1.)
+    torch.nn.init.xavier_normal_(layer.weight, gain=1.)
 
 criterion = nn.CrossEntropyLoss()
 criterion2 = CrossEntropyLabelSmooth(num_classes=10, epsilon=0.3)
