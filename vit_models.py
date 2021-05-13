@@ -49,6 +49,7 @@ class MultiHeadSelfAttention(nn.Module):
         o = self.dropout(self.o(attn.flatten(2)))
         return o
 
+
 class Mul(torch.nn.Module):
     def __init__(self, weight):
         super(Mul, self).__init__()
@@ -85,7 +86,7 @@ class ViT(nn.Module):
         enc_list = [TransformerEncoder(hidden,mlp_hidden=mlp_hidden, dropout=dropout, head=head) for _ in range(num_layers)]
         self.enc = nn.Sequential(*enc_list)
         self.fc = nn.Sequential(
-            nn.LayerNorm(hidden),
+            # nn.LayerNorm(hidden),
             # nn.BatchNorm1d(hidden),
             nn.Linear(hidden, num_classes), # for cls_token
             Mul(0.3)
