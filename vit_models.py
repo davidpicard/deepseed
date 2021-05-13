@@ -38,7 +38,7 @@ class ViT(nn.Module):
         self.enc = nn.TransformerEncoder(nn.TransformerEncoderLayer(hidden, head, mlp_hidden, dropout=dropout, activation="gelu"), num_layers, norm=TransposeBN(hidden))
         self.fc = nn.Sequential(
             # nn.LayerNorm(hidden),
-            TransposeBN(hidden),
+            nn.BatchNorm1d(hidden),
             nn.Linear(hidden, num_classes), # for cls_token
             Mul(0.1)
         )
