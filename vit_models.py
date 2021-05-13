@@ -6,9 +6,11 @@ import torch.nn.functional as F
 class TransformerEncoder(nn.Module):
     def __init__(self, feats:int, mlp_hidden:int, head:int=8, dropout:float=0.):
         super(TransformerEncoder, self).__init__()
-        self.la1 = nn.LayerNorm(feats)
+        # self.la1 = nn.LayerNorm(feats)
+        self.la1 = TransposeBN(feats)
         self.msa = MultiHeadSelfAttention(feats, head=head, dropout=dropout)
-        self.la2 = nn.LayerNorm(feats)
+        # self.la2 = nn.LayerNorm(feats)
+        self.la2 = TransposeBN(feats)
         self.mlp = nn.Sequential(
             nn.Linear(feats, mlp_hidden),
             nn.ReLU(inplace=True),
