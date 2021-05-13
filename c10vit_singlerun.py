@@ -32,7 +32,7 @@ def lr(e):
   elif e < 27:
     return 0.5*(27-e)/24. + 0.01
   else:
-    return 0.005
+    return 0.01
 sched = optim.lr_scheduler.LambdaLR(optimizer, lr)
 
 augment = Augment()
