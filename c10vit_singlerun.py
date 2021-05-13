@@ -74,7 +74,7 @@ for e in range(epoch):  # loop over the dataset multiple times
     outputs = net(inputs)
     loss = criterion(outputs, labels)
     loss2 = criterion2(outputs, labels)
-    loss = loss + 2*loss2
+    loss = loss + 1.*loss2
     # torch.cuda.synchronize()
     # t1 += time.time() - s
     loss.backward()
