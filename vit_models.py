@@ -101,7 +101,7 @@ class ViT(nn.Module):
         out = torch.cat([self.cls_token.repeat(out.size(0),1,1), self.emb(out)],dim=1)
         out = out + self.pos_emb
         out = self.enc(out)
-        out = out.max(dim=1)
+        out, _ = out.max(1)
         out = self.fc(out)
         return out
 
