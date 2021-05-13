@@ -29,7 +29,7 @@ for layer in net.modules():
     layer.momentum = 0.1
 
 criterion = nn.CrossEntropyLoss()
-criterion2 = CrossEntropyLabelSmooth(num_classes=10, epsilon=0.2)
+criterion2 = CrossEntropyLabelSmooth(num_classes=10, epsilon=0.1)
 optimizer = optim.SGD(net.parameters(), lr=0.4, momentum=0.95, nesterov=True, weight_decay=0.00001)
 
 
@@ -41,7 +41,7 @@ def lr(e):
   else:
     return 0.02
 # sched = optim.lr_scheduler.LambdaLR(optimizer, lr)
-sched = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=epoch, eta_min=0.05)
+sched = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=epoch, eta_min=0.02)
 
 augment = Augment()
 augment.to(device).half()
