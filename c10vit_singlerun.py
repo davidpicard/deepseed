@@ -29,8 +29,8 @@ optimizer = optim.SGD(net.parameters(), lr=0.5, momentum=0.9, nesterov=True, wei
 def lr(e):
   if e < 4:
     return 0.5*e/3. + 0.01
-  elif e < 22:
-    return 0.5*(22-e)/19. + 0.01
+  elif e < 27:
+    return 0.5*(27-e)/24. + 0.01
   else:
     return 0.01
 sched = optim.lr_scheduler.LambdaLR(optimizer, lr)
