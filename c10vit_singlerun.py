@@ -81,11 +81,11 @@ for e in range(epoch):  # loop over the dataset multiple times
     # forward + backward + optimize
     outputs = net(inputs)
     loss = criterion(outputs, labels)
-    if e < 19:
-      loss2 = criterion2(outputs, labels)
-      loss = loss + 1.*loss2
-    else:
-      loss *= 3.
+    # if e < 19:
+    loss2 = criterion2(outputs, labels)
+    loss = loss + 1.*loss2
+    # else:
+    #   loss *= 3.
     # torch.cuda.synchronize()
     # t1 += time.time() - s
     loss.backward()
