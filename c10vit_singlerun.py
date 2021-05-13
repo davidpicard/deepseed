@@ -28,7 +28,7 @@ optimizer = optim.SGD(net.parameters(), lr=0.5, momentum=0.9, nesterov=True, wei
 
 def lr(e):
   if e < 4:
-    return 0.5*e/3. + 0.01
+    return 0.5*(e+1)/3. + 0.01
   elif e < 27:
     return 0.5*(27-e)/24. + 0.01
   else:
