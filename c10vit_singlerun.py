@@ -21,7 +21,7 @@ n_val = len(val_lbls)
 net = ViT()
 net.to(device).half()
 for layer in net.modules():
-  if isinstance(layer, nn.BatchNorm2d):
+  if isinstance(layer, nn.BatchNorm1d):
     print('bn !!', layer)
     layer.float()
     if hasattr(layer, 'weight') and layer.weight is not None:
