@@ -20,13 +20,7 @@ n_val = len(val_lbls)
 
 net = ViT()
 net.to(device).half()
-for layer in net.modules():
-  if isinstance(layer, nn.BatchNorm2d):
-    layer.float()
-    if hasattr(layer, 'weight') and layer.weight is not None:
-      layer.weight.data.fill_(1.0)
-    layer.eps = 0.00001
-    layer.momentum = 0.1
+
 
 criterion = nn.CrossEntropyLoss()
 criterion2 = CrossEntropyLabelSmooth(num_classes=10, epsilon=0.2)
