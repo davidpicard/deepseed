@@ -41,7 +41,7 @@ def lr(e):
   else:
     return 0.02
 # sched = optim.lr_scheduler.LambdaLR(optimizer, lr)
-sched = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=epoch//2, eta_min=0.01)
+sched = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=epoch*2, eta_min=0.01)
 
 augment = Augment()
 augment.to(device).half()
