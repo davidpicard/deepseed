@@ -6,7 +6,7 @@ from vit_models import *
 from datasets import *
 from loss import *
 
-batch_size = 500
+batch_size = 250
 v_batch_size = 100
 epoch = 42
 
