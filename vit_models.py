@@ -12,6 +12,16 @@ class Mul(torch.nn.Module):
         return x * self.weight
 
 
+class TransposeBN(nn.Module):
+    def __init__(self, dim):
+        super(TransposeBN, self).__init__()
+        self.bn = nn.BatchNorm1d(dim)
+    def forward(self, x):
+        x = x.permute(0,2,1)
+        x = self.bn(x)
+        return x.permute(0,2,1)
+
+
 
 class ViT(nn.Module):
     def __init__(self, num_classes:int=10, img_size:int=32, patch:int=8, dropout:float=0.5, num_layers:int=1, hidden:int=128, mlp_hidden:int=128*4, head:int=4):
@@ -25,10 +35,10 @@ class ViT(nn.Module):
         self.emb = nn.Linear(f, hidden) # (b, n, f)
         self.cls_token = nn.Parameter(torch.randn(1, 1, hidden))
         self.pos_emb = nn.Parameter(torch.randn(1, (self.patch**2)+1, hidden))
-        self.enc = nn.TransformerEncoder(nn.TransformerEncoderLayer(hidden, head, mlp_hidden, dropout=dropout, activation="gelu"), num_layers, norm=nn.BatchNorm1d(hidden))
+        self.enc = nn.TransformerEncoder(nn.TransformerEncoderLayer(hidden, head, mlp_hidden, dropout=dropout, activation="gelu"), num_layers, norm=TransposeBN(hidden))
         self.fc = nn.Sequential(
             # nn.LayerNorm(hidden),
-            nn.BatchNorm1d(hidden),
+            TransposeBN(hidden),
             nn.Linear(hidden, num_classes), # for cls_token
             Mul(0.1)
         )
