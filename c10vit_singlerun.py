@@ -6,7 +6,7 @@ from vit_models import *
 from datasets import *
 from loss import *
 
-batch_size = 250
+batch_size = 500
 v_batch_size = 100
 epoch = 42
 
@@ -40,7 +40,8 @@ def lr(e):
     return 0.5*(27-e)/23. + 0.01
   else:
     return 0.02
-sched = optim.lr_scheduler.LambdaLR(optimizer, lr)
+# sched = optim.lr_scheduler.LambdaLR(optimizer, lr)
+torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=epoch, eta_min=0.01)
 
 augment = Augment()
 augment.to(device).half()
