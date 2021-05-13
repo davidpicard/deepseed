@@ -92,7 +92,7 @@ for e in range(epoch):  # loop over the dataset multiple times
   # t2 /= n_train//batch_size
   # t3 /= n_train//batch_size
 
-  if e == 0 or e%1 == 0:
+  if e == 0 or e%2 == 1:
     net.eval()
     val_loss = []
     val_acc = []
