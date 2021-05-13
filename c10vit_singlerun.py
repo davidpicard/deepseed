@@ -32,7 +32,7 @@ def lr(e):
   elif e < 27:
     return 0.5*(27-e)/23. + 0.01
   else:
-    return 0.01
+    return 0.05
 sched = optim.lr_scheduler.LambdaLR(optimizer, lr)
 
 augment = Augment()
@@ -73,11 +73,11 @@ for e in range(epoch):  # loop over the dataset multiple times
     # forward + backward + optimize
     outputs = net(inputs)
     loss = criterion(outputs, labels)
-    if e < 25:
+    if e < 27:
       loss2 = criterion2(outputs, labels)
       loss = loss + 1.*loss2
     else:
-      loss *= 3.
+      loss *= 4.
     # torch.cuda.synchronize()
     # t1 += time.time() - s
     loss.backward()
