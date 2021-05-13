@@ -76,6 +76,8 @@ for e in range(epoch):  # loop over the dataset multiple times
     if e < 25:
       loss2 = criterion2(outputs, labels)
       loss = loss + 1.*loss2
+    else:
+      loss *= 2.
     # torch.cuda.synchronize()
     # t1 += time.time() - s
     loss.backward()
