@@ -71,7 +71,7 @@ class TransposeBN(nn.Module):
 
 
 class ViT(nn.Module):
-    def __init__(self, num_classes:int=10, img_size:int=32, patch:int=4, dropout:float=0., num_layers:int=4, hidden:int=256, mlp_hidden:int=1024+512, head:int=16):
+    def __init__(self, num_classes:int=10, img_size:int=32, patch:int=4, dropout:float=0., num_layers:int=7, hidden:int=384, mlp_hidden:int=384, head:int=16):
         super(ViT, self).__init__()
         # hidden=384
 
