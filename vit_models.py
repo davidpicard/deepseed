@@ -25,9 +25,9 @@ class ViT(nn.Module):
         self.emb = nn.Linear(f, hidden) # (b, n, f)
         self.cls_token = nn.Parameter(torch.randn(1, 1, hidden))
         self.pos_emb = nn.Parameter(torch.randn(1, (self.patch**2)+1, hidden))
-        self.enc = nn.TransformerEncoder(nn.TransformerEncoderLayer(hidden, head, mlp_hidden, dropout=dropout, activation="relu"), num_layers, nn.LayerNorm(hidden))
+        self.enc = nn.TransformerEncoder(nn.TransformerEncoderLayer(hidden, head, mlp_hidden, dropout=dropout, activation="relu"), num_layers)
         self.fc = nn.Sequential(
-            nn.LayerNorm(hidden),
+            # nn.LayerNorm(hidden),
             nn.Linear(hidden, num_classes), # for cls_token
             Mul(0.01)
         )
