@@ -29,7 +29,7 @@ for layer in net.modules():
     layer.momentum = 0.1
 
 criterion = nn.CrossEntropyLoss()
-criterion2 = CrossEntropyLabelSmooth(num_classes=10, epsilon=0.1)
+criterion2 = CrossEntropyLabelSmooth(num_classes=10, epsilon=0.3)
 optimizer = optim.SGD(net.parameters(), lr=0.4, momentum=0.95, nesterov=True, weight_decay=0.00001)
 
 
