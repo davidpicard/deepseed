@@ -27,10 +27,10 @@ criterion2 = CrossEntropyLabelSmooth(num_classes=10, epsilon=0.2)
 optimizer = optim.SGD(net.parameters(), lr=0.2, momentum=0.9, nesterov=True, weight_decay=0.001)
 
 def lr(e):
-  if e < 4:
+  if e < 9:
     return 0.5*e/3. + 0.01
-  elif e < 22:
-    return 0.5*(22-e)/19. + 0.01
+  elif e < 27:
+    return 0.5*(27-e)/19. + 0.01
   else:
     return 0.01
 sched = optim.lr_scheduler.LambdaLR(optimizer, lr)
