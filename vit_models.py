@@ -11,10 +11,10 @@ class TransformerEncoder(nn.Module):
         self.la2 = nn.LayerNorm(feats)
         self.mlp = nn.Sequential(
             nn.Linear(feats, mlp_hidden),
-            nn.CELU(inplace=True),
+            nn.ReLU(inplace=True),
             nn.Dropout(dropout),
             nn.Linear(mlp_hidden, feats),
-            nn.CELU(inplace=True),
+            nn.ReLU(inplace=True),
             nn.Dropout(dropout),
         )
 
