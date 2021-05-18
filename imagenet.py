@@ -10,7 +10,7 @@ from torch.utils.data import DataLoader
 from datasets import *
 from loss import *
 
-batch_size = 512
+batch_size = 256
 batch_size_ft = 64
 v_batch_size = 50
 epoch = 2
@@ -100,7 +100,7 @@ if not args.eval_pretrained:
 
             print('{}/{} loss: {:5.02f} acc: {:5.02f} in {:6.01f}'.format(i, n_train, torch.stack(running_loss).mean(), 100*torch.stack(running_acc).mean(), time.time()-start), end='\r')
             i += 1
-            if i > 100:
+            if i > 1000:
                 break
         print()
         eval(model)
@@ -116,8 +116,8 @@ if not args.eval_pretrained:
         p.requires_grad = True
 
     # new optim and sched
-    optimizer = optim.SGD(model.parameters(), lr=0.0001, momentum=0.9, nesterov=True, weight_decay=0.0001)
-    sched = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=epoch, eta_min=0.00001)
+    optimizer = optim.SGD(model.parameters(), lr=0.001, momentum=0.9, nesterov=True, weight_decay=0.0001)
+    sched = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=epoch, eta_min=0.0001)
 
     running_loss = []
     running_acc = []
