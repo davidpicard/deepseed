@@ -19,6 +19,7 @@ torch.backends.cudnn.benchmark = True
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--data_dir", help="path to imagenet")
+parser.add_argument("--eval_pretrained", type=bool, default=False)
 args = parser.parse_args()
 
 train, val = build_imagenet(args.data_dir)
@@ -29,6 +30,9 @@ n_val = len(val_ds)
 
 # build model
 model = torchvision.models.resnet50(pretrained=True)
+if not args.eval_pretrained:
+    torch.nn.init.kaiming_uniform_(model.fc.weight)
+
 model.to(device)
 
 
