@@ -11,8 +11,9 @@ from datasets import *
 from loss import *
 
 batch_size = 512
+batch_size_ft = 64
 v_batch_size = 50
-epoch = 5
+epoch = 2
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 torch.backends.cudnn.benchmark = True
@@ -76,14 +77,56 @@ if not args.eval_pretrained:
             running_loss.append(loss.detach().cpu())
             running_acc.append(((outputs.argmax(dim=1) == lbls).sum() / lbls.shape[0]).detach().cpu())
 
-            print('{}/{} loss: {:5.02f} acc: {:5.02f} in {}'.format(i, n_train, torch.stack(running_loss).mean(), 100*torch.stack(running_acc).mean(), time.time()-start), end='\r')
+            print('{}/{} loss: {:5.02f} acc: {:5.02f} in {:6.01f}'.format(i, n_train, torch.stack(running_loss).mean(), 100*torch.stack(running_acc).mean(), time.time()-start), end='\r')
             i += 1
         print()
         eval(model)
         model.train()
 
+    print('Fine tuning all layers')
+    # new dataset batch_size
+    train_ds = DataLoader(train, batch_size=batch_size_ft, num_workers=10, shuffle=True)
+    n_train = len(train_ds)
+
+    # train all model
+    for p in model.parameters():
+        p.requires_grad = True
+
+    # new optim and sched
+    optimizer = optim.SGD(model.parameters(), lr=0.0001, momentum=0.9, nesterov=True, weight_decay=0.0001)
+    sched = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=epoch, eta_min=0.00001)
+
+    running_loss = []
+    running_acc = []
+    start = time.time()
+    i = 1
+    for imgs, lbls in train_ds:
+        imgs = imgs.to(device)
+        lbls = lbls.to(device)
+
+        optimizer.zero_grad()
+
+        outputs = model(imgs)
+        loss = criterion(outputs, lbls)
+        loss2 = criterion2(outputs, lbls)
+        loss = loss + loss2
+
+        loss.backward()
+        optimizer.step()
+        # print statistics
+        running_loss.append(loss.detach().cpu())
+        running_acc.append(((outputs.argmax(dim=1) == lbls).sum() / lbls.shape[0]).detach().cpu())
+
+        print('{}/{} loss: {:5.02f} acc: {:5.02f} in {:6.01f}'.format(i, n_train, torch.stack(running_loss).mean(),
+                                                                      100 * torch.stack(running_acc).mean(),
+                                                                      time.time() - start), end='\r')
+        i += 1
+    print()
+    eval(model)
+
 # eval
-eval(model)
+if args.eval_pretrained:
+    eval(model)
 
 
 
