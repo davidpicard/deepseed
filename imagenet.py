@@ -14,7 +14,7 @@ v_batch_size = 50
 epoch = 1
 ft_epoch = 2
 max_train = 2000
-max_train_ft = 24000
+max_train_ft = 22000
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 torch.backends.cudnn.benchmark = True
