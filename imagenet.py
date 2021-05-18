@@ -18,6 +18,27 @@ epoch = 2
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 torch.backends.cudnn.benchmark = True
 
+
+def eval(model):
+    model.eval()
+    val_loss = []
+    val_acc = []
+    i = 1
+    for imgs, lbls in val_ds:
+        imgs = imgs.to(device)
+        lbls = lbls.to(device)
+        outputs = model(imgs)
+        val_loss.append(criterion(outputs, lbls).detach().cpu())
+        val_acc.append(((outputs.argmax(dim=1) == lbls).sum() / lbls.shape[0]).detach().cpu())
+        print('{}/{} val loss {:5.02f} val acc {:5.02f}'.format(i, n_val, torch.stack(val_loss).mean(), 100. * torch.stack(val_acc).mean()), end='\r')
+        i += 1
+    print()
+    return torch.stack(val_loss).mean(), 100. * torch.stack(val_acc).mean()
+
+
+#############
+
+
 parser = argparse.ArgumentParser()
 parser.add_argument("--data_dir", help="path to imagenet")
 parser.add_argument("--eval_pretrained", type=bool, default=False)
@@ -79,6 +100,8 @@ if not args.eval_pretrained:
 
             print('{}/{} loss: {:5.02f} acc: {:5.02f} in {:6.01f}'.format(i, n_train, torch.stack(running_loss).mean(), 100*torch.stack(running_acc).mean(), time.time()-start), end='\r')
             i += 1
+            if i > 100:
+                break
         print()
         eval(model)
         model.train()
@@ -128,23 +151,6 @@ if not args.eval_pretrained:
 if args.eval_pretrained:
     eval(model)
 
-
-
-def eval(model):
-    model.eval()
-    val_loss = []
-    val_acc = []
-    i = 1
-    for imgs, lbls in val_ds:
-        imgs = imgs.to(device)
-        lbls = lbls.to(device)
-        outputs = model(imgs)
-        val_loss.append(criterion(outputs, lbls).detach().cpu())
-        val_acc.append(((outputs.argmax(dim=1) == lbls).sum() / lbls.shape[0]).detach().cpu())
-        print('{}/{} val loss {:5.02f} val acc {:5.02f}'.format(i, n_val, torch.stack(val_loss).mean(), 100. * torch.stack(val_acc).mean()), end='\r')
-        i += 1
-    print()
-    return torch.stack(val_loss).mean(), 100. * torch.stack(val_acc).mean()
 
 
 
