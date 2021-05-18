@@ -23,8 +23,8 @@ parser.add_argument("--eval_pretrained", type=bool, default=False)
 args = parser.parse_args()
 
 train, val = build_imagenet(args.data_dir)
-train_ds = DataLoader(train, batch_size=batch_size, num_workers=4, shuffle=True)
-val_ds = DataLoader(val, batch_size=v_batch_size, num_workers=4)
+train_ds = DataLoader(train, batch_size=batch_size, num_workers=10, shuffle=True)
+val_ds = DataLoader(val, batch_size=v_batch_size, num_workers=10)
 n_train = len(train_ds)
 n_val = len(val_ds)
 
