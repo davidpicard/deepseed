@@ -32,7 +32,7 @@ n_val = len(val_ds)
 model = torchvision.models.resnet50(pretrained=True)
 if not args.eval_pretrained:
     torch.nn.init.kaiming_uniform_(model.fc.weight)
-    torch.nn.init.kaiming_uniform_(model.fc.bias)
+    torch.nn.init.normal_(model.fc.bias)
 
 for p in model.parameters():
     p.requires_grad = False
@@ -45,38 +45,40 @@ model.to(device)
 
 # optimization hparams
 criterion = nn.CrossEntropyLoss()
-criterion2 = CrossEntropyLabelSmooth(num_classes=10, epsilon=0.3)
-optimizer = optim.SGD(model.parameters(), lr=0.1, momentum=0.9, nesterov=True, weight_decay=0.00001)
-sched = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=epoch, eta_min=0.02)
 
-# training loop
-t_start = time.time()
-for e in range(epoch):  # loop over the dataset multiple times
-    running_loss = []
-    running_acc = []
-    start = time.time()
-    i = 1
-    for imgs, lbls in train_ds:
-        imgs = imgs.to(device)
-        lbls = lbls.to(device)
+if not args.eval_pretrained:
+    criterion2 = CrossEntropyLabelSmooth(num_classes=10, epsilon=0.3)
+    optimizer = optim.SGD(model.parameters(), lr=0.1, momentum=0.9, nesterov=True, weight_decay=0.0001)
+    sched = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=epoch, eta_min=0.02)
 
-        optimizer.zero_grad()
+    # training loop
+    t_start = time.time()
+    for e in range(epoch):  # loop over the dataset multiple times
+        running_loss = []
+        running_acc = []
+        start = time.time()
+        i = 1
+        for imgs, lbls in train_ds:
+            imgs = imgs.to(device)
+            lbls = lbls.to(device)
 
-        outputs = model(imgs)
-        loss = criterion(outputs, lbls)
-        loss2 = criterion2(outputs, lbls)
-        loss = loss + loss2
+            optimizer.zero_grad()
 
-        loss.backward()
-        optimizer.step()
-        # print statistics
-        running_loss.append(loss.detach().cpu)
-        running_acc.append(((outputs.argmax(dim=1) == lbls).sum() / lbls.shape[0]).detach().cpu())
+            outputs = model(imgs)
+            loss = criterion(outputs, lbls)
+            loss2 = criterion2(outputs, lbls)
+            loss = loss + loss2
 
-        print('{}/{} loss: {:5.02f} acc: {:5.02f} in {}'.format(i, n_train, torch.stack(running_loss).mean(), torch.stack(running_acc).mean(), time.time()-start), end='\r')
-    print()
-    eval(model)
-    model.train()
+            loss.backward()
+            optimizer.step()
+            # print statistics
+            running_loss.append(loss.detach().cpu)
+            running_acc.append(((outputs.argmax(dim=1) == lbls).sum() / lbls.shape[0]).detach().cpu())
+
+            print('{}/{} loss: {:5.02f} acc: {:5.02f} in {}'.format(i, n_train, torch.stack(running_loss).mean(), torch.stack(running_acc).mean(), time.time()-start), end='\r')
+        print()
+        eval(model)
+        model.train()
 
 # eval
 eval(model)
