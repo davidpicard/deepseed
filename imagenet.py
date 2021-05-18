@@ -38,6 +38,8 @@ model.eval()
 val_loss = []
 val_acc = []
 for imgs, lbls in val_ds:
+    imgs = imgs.to(device)
+    lbls = lbls.to(device)
     outputs = model(imgs)
     val_loss.append(criterion(outputs, lbls))
     val_acc.append((outputs.argmax(dim=1) == lbls).sum() / lbls.shape[0])
