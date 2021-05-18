@@ -52,6 +52,7 @@ if not args.eval_pretrained:
     sched = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=epoch, eta_min=0.02)
 
     # training loop
+    print('Training last layer')
     t_start = time.time()
     for e in range(epoch):  # loop over the dataset multiple times
         running_loss = []
@@ -75,7 +76,7 @@ if not args.eval_pretrained:
             running_loss.append(loss.detach().cpu)
             running_acc.append(((outputs.argmax(dim=1) == lbls).sum() / lbls.shape[0]).detach().cpu())
 
-            print('{}/{} loss: {:5.02f} acc: {:5.02f} in {}'.format(i, n_train, torch.stack(running_loss).mean(), torch.stack(running_acc).mean(), time.time()-start), end='\r')
+            print('{}/{} loss: {:5.02f} acc: {:5.02f} in {}'.format(i, n_train, torch.stack(running_loss).mean(), 100*torch.stack(running_acc).mean(), time.time()-start), end='\r')
         print()
         eval(model)
         model.train()
