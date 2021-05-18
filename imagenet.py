@@ -48,8 +48,8 @@ criterion = nn.CrossEntropyLoss()
 
 if not args.eval_pretrained:
     criterion2 = CrossEntropyLabelSmooth(num_classes=10, epsilon=0.3)
-    optimizer = optim.SGD(model.parameters(), lr=0.1, momentum=0.9, nesterov=True, weight_decay=0.0001)
-    sched = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=epoch, eta_min=0.02)
+    optimizer = optim.SGD(model.parameters(), lr=0.01, momentum=0.9, nesterov=True, weight_decay=0.0001)
+    sched = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=epoch, eta_min=0.001)
 
     # training loop
     print('Training last layer')
@@ -77,6 +77,7 @@ if not args.eval_pretrained:
             running_acc.append(((outputs.argmax(dim=1) == lbls).sum() / lbls.shape[0]).detach().cpu())
 
             print('{}/{} loss: {:5.02f} acc: {:5.02f} in {}'.format(i, n_train, torch.stack(running_loss).mean(), 100*torch.stack(running_acc).mean(), time.time()-start), end='\r')
+            i += 1
         print()
         eval(model)
         model.train()
