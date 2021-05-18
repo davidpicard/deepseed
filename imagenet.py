@@ -5,11 +5,13 @@ from torch import optim
 import time
 import argparse
 
+from torch.utils.data import DataLoader
+
 from datasets import *
 from loss import *
 
-batch_size = 500
-v_batch_size = 100
+batch_size = 256
+v_batch_size = 50
 epoch = 42
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
@@ -20,6 +22,8 @@ parser.add_argument("--data_dir", help="path to imagenet")
 args = parser.parse_args()
 
 train, val = build_imagenet(args.data_dir)
+train_ds = DataLoader(train, batch_size=batch_size, num_workers=10, shuffle=True)
+val_ds = DataLoader(val, batch_size=50, num_workers=10)
 
 # build model
 model = torchvision.models.resnet50(pretrained=True)
