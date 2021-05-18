@@ -118,7 +118,7 @@ if not args.eval_pretrained:
         p.requires_grad = True
 
     # new optim and sched
-    optimizer = optim.SGD(model.parameters(), lr=0.0002, momentum=0.9, nesterov=True, weight_decay=0.00001)
+    optimizer = optim.SGD(model.parameters(), lr=0.0005, momentum=0.9, nesterov=True, weight_decay=0.0001)
     sched = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=n_train//2000, eta_min=0.0001)
 
     running_loss = []
