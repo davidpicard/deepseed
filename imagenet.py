@@ -41,7 +41,7 @@ for imgs, lbls in val_ds:
     imgs = imgs.to(device)
     lbls = lbls.to(device)
     outputs = model(imgs)
-    val_loss.append(criterion(outputs, lbls))
+    val_loss.append(criterion(outputs, lbls).detach().cpu())
     val_acc.append(((outputs.argmax(dim=1) == lbls).sum() / lbls.shape[0]).detach().cpu())
     print('val loss {:5.02f} val acc {:5.02f}'.format(torch.stack(val_loss).mean(), 100. * torch.stack(val_acc).mean()), end='\r')
 print()
