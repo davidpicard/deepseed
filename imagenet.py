@@ -22,10 +22,10 @@ parser.add_argument("--data_dir", help="path to imagenet")
 args = parser.parse_args()
 
 train, val = build_imagenet(args.data_dir)
-n_train = len(train)
-n_val = len(val)
 train_ds = DataLoader(train, batch_size=batch_size, num_workers=4, shuffle=True)
 val_ds = DataLoader(val, batch_size=v_batch_size, num_workers=4)
+n_train = len(train_ds)
+n_val = len(val_ds)
 
 # build model
 model = torchvision.models.resnet50(pretrained=True)
