@@ -14,6 +14,7 @@ batch_size = 256
 batch_size_ft = 64
 v_batch_size = 50
 epoch = 1
+max_train = 2000
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 torch.backends.cudnn.benchmark = True
@@ -106,6 +107,9 @@ if not args.eval_pretrained:
                 model.train()
                 sched.step()
 
+            if i >= max_train:
+                break
+
             i += 1
 
     print('Fine tuning all layers')
@@ -118,7 +122,7 @@ if not args.eval_pretrained:
         p.requires_grad = True
 
     # new optim and sched
-    optimizer = optim.SGD(model.parameters(), lr=0.0005, momentum=0.9, nesterov=True, weight_decay=0.0001)
+    optimizer = optim.SGD(model.parameters(), lr=0.0002, momentum=0.9, nesterov=True, weight_decay=0.0001)
     sched = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=n_train//2000, eta_min=0.0001)
 
     running_loss = []
