@@ -73,11 +73,9 @@ if not args.eval_pretrained:
             loss.backward()
             optimizer.step()
             # print statistics
-            running_loss.append(loss.detach().cpu)
+            running_loss.append(loss.detach().cpu())
             running_acc.append(((outputs.argmax(dim=1) == lbls).sum() / lbls.shape[0]).detach().cpu())
 
-            torch.stack(running_loss).mean()
-            torch.stack(running_acc).mean()
             print('{}/{} loss: {:5.02f} acc: {:5.02f} in {}'.format(i, n_train, torch.stack(running_loss).mean(), 100*torch.stack(running_acc).mean(), time.time()-start), end='\r')
         print()
         eval(model)
