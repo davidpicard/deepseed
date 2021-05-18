@@ -117,7 +117,7 @@ if not args.eval_pretrained:
             if i%1000 == 0:
                 print()
                 l, a = eval(model)
-                tr_loss.apend(l)
+                tr_loss.append(l)
                 tr_acc.append(a)
                 model.train()
                 sched.step()
