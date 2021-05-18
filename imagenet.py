@@ -11,7 +11,7 @@ from datasets import *
 from loss import *
 
 batch_size = 256
-v_batch_size = 100
+v_batch_size = 50
 epoch = 42
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
