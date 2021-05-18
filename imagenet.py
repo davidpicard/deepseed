@@ -69,8 +69,8 @@ model.to(device)
 criterion = nn.CrossEntropyLoss()
 
 if not args.eval_pretrained:
-    criterion2 = CrossEntropyLabelSmooth(num_classes=10, epsilon=0.3)
-    optimizer = optim.SGD(model.parameters(), lr=0.01, momentum=0.9, nesterov=True, weight_decay=0.0001)
+    criterion2 = CrossEntropyLabelSmooth(num_classes=1000, epsilon=0.1)
+    optimizer = optim.SGD(model.parameters(), lr=0.02, momentum=0.9, nesterov=True, weight_decay=0.0001)
     sched = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=epoch*n_train//1000, eta_min=0.001)
 
     # training loop
