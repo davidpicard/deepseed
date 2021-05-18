@@ -10,7 +10,7 @@ from torch.utils.data import DataLoader
 from datasets import *
 from loss import *
 
-batch_size = 256
+batch_size = 512
 v_batch_size = 50
 epoch = 5
 
