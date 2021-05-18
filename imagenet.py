@@ -13,7 +13,7 @@ from loss import *
 batch_size = 256
 batch_size_ft = 64
 v_batch_size = 50
-epoch = 2
+epoch = 1
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 torch.backends.cudnn.benchmark = True
@@ -71,7 +71,7 @@ criterion = nn.CrossEntropyLoss()
 if not args.eval_pretrained:
     criterion2 = CrossEntropyLabelSmooth(num_classes=10, epsilon=0.3)
     optimizer = optim.SGD(model.parameters(), lr=0.01, momentum=0.9, nesterov=True, weight_decay=0.0001)
-    sched = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=epoch, eta_min=0.001)
+    sched = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=epoch*n_train//1000, eta_min=0.001)
 
     # training loop
     print('Training last layer')
@@ -99,12 +99,14 @@ if not args.eval_pretrained:
             running_acc.append(((outputs.argmax(dim=1) == lbls).sum() / lbls.shape[0]).detach().cpu())
 
             print('{}/{} loss: {:5.02f} acc: {:5.02f} in {:6.01f}'.format(i, n_train, torch.stack(running_loss).mean(), 100*torch.stack(running_acc).mean(), time.time()-start), end='\r')
+
+            if i%1000 == 0:
+                print()
+                eval(model)
+                model.train()
+                sched.step()
+
             i += 1
-            if i > 1000:
-                break
-        print()
-        eval(model)
-        model.train()
 
     print('Fine tuning all layers')
     # new dataset batch_size
@@ -116,8 +118,8 @@ if not args.eval_pretrained:
         p.requires_grad = True
 
     # new optim and sched
-    optimizer = optim.SGD(model.parameters(), lr=0.001, momentum=0.9, nesterov=True, weight_decay=0.0001)
-    sched = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=epoch, eta_min=0.0001)
+    optimizer = optim.SGD(model.parameters(), lr=0.002, momentum=0.9, nesterov=True, weight_decay=0.0001)
+    sched = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=n_train//2000, eta_min=0.0001)
 
     running_loss = []
     running_acc = []
@@ -143,9 +145,14 @@ if not args.eval_pretrained:
         print('{}/{} loss: {:5.02f} acc: {:5.02f} in {:6.01f}'.format(i, n_train, torch.stack(running_loss).mean(),
                                                                       100 * torch.stack(running_acc).mean(),
                                                                       time.time() - start), end='\r')
+
+        if i % 2000 == 0:
+            print()
+            eval(model)
+            model.train()
+            sched.step()
+
         i += 1
-    print()
-    eval(model)
 
 # eval
 if args.eval_pretrained:
