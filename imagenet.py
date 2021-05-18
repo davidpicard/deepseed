@@ -44,7 +44,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("--data_dir", help="path to imagenet")
 parser.add_argument("--eval_pretrained", type=bool, default=False)
 parser.add_argument("--output", default="results_imagenet.json")
-parser.add_argument("--seed", default=0)
+parser.add_argument("--seed", type=int, default=0)
 args = parser.parse_args()
 
 data = []
