@@ -51,10 +51,6 @@ parser.add_argument("--nb_seeds", type=int, default=10)
 args = parser.parse_args()
 
 data = []
-tr_loss = []
-tr_acc = []
-ft_loss = []
-ft_acc = []
 
 train, val = build_imagenet(args.data_dir)
 train_ds = DataLoader(train, batch_size=batch_size, num_workers=10, shuffle=True)
@@ -66,6 +62,11 @@ for s in range(args.seed, args.seed + args.nb_seeds):
     print('doing seed {}'.format(s))
     torch.manual_seed(s)
     np.random.seed(s)
+
+    tr_loss = []
+    tr_acc = []
+    ft_loss = []
+    ft_acc = []
 
     # build model
     model = torchvision.models.resnet50(pretrained=True)
