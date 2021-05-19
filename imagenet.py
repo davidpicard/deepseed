@@ -62,7 +62,7 @@ val_ds = DataLoader(val, batch_size=v_batch_size, num_workers=10)
 n_train = len(train_ds)
 n_val = len(val_ds)
 
-for s in range(args.seed, args.nb_seeds):
+for s in range(args.seed, args.seed + args.nb_seeds):
     print('doing seed {}'.format(s))
     torch.manual_seed(s)
     np.random.seed(s)
