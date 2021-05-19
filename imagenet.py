@@ -191,7 +191,7 @@ d = { 'seed': s,
     }
 
 data.append(d)
-
+print(d)
 with open(args.output, 'w') as fp:
     json.dump(data, fp)
 
