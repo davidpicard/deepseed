@@ -36,7 +36,7 @@ def eval(model):
         if i >= 100:
             break
     print()
-    return torch.stack(val_loss).mean().numpy(), 100. * torch.stack(val_acc).mean().numpy()
+    return torch.stack(val_loss).mean().item(), 100. * torch.stack(val_acc).mean().item()
 
 
 #############
