@@ -33,8 +33,10 @@ def eval(model):
         val_acc.append(((outputs.argmax(dim=1) == lbls).sum() / lbls.shape[0]).detach().cpu())
         print('{}/{} val loss {:5.02f} val acc {:5.02f}'.format(i, n_val, torch.stack(val_loss).mean(), 100. * torch.stack(val_acc).mean()), end='\r')
         i += 1
+        if i >= 100:
+            break
     print()
-    return torch.stack(val_loss).mean(), 100. * torch.stack(val_acc).mean()
+    return torch.stack(val_loss).mean().numpy(), 100. * torch.stack(val_acc).mean().numpy()
 
 
 #############
