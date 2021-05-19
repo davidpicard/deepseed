@@ -13,8 +13,8 @@ batch_size_ft = 64
 v_batch_size = 50
 epoch = 1
 ft_epoch = 2
-max_train = 200
-max_train_ft = 2200
+max_train = 2000
+max_train_ft = 22000
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 torch.backends.cudnn.benchmark = True
@@ -33,8 +33,6 @@ def eval(model):
         val_acc.append(((outputs.argmax(dim=1) == lbls).sum() / lbls.shape[0]).detach().cpu())
         print('{}/{} val loss {:5.02f} val acc {:5.02f}'.format(i, n_val, torch.stack(val_loss).mean(), 100. * torch.stack(val_acc).mean()), end='\r')
         i += 1
-        if i >= 100:
-            break
     print()
     return torch.stack(val_loss).mean().item(), 100. * torch.stack(val_acc).mean().item()
 
@@ -119,7 +117,7 @@ for s in range(args.seed, args.seed + args.nb_seeds):
 
                 print('{}/{} loss: {:5.02f} acc: {:5.02f} in {:6.01f}'.format(i, n_train, torch.stack(running_loss).mean(), 100*torch.stack(running_acc).mean(), time.time()-start), end='\r')
 
-                if i%100 == 0:
+                if i%1000 == 0:
                     print()
                     l, a = eval(model)
                     tr_loss.append(l)
@@ -170,7 +168,7 @@ for s in range(args.seed, args.seed + args.nb_seeds):
                                                                               100 * torch.stack(running_acc).mean(),
                                                                               time.time() - start), end='\r')
 
-                if i % 200 == 0:
+                if i % 2000 == 0:
                     print()
                     l, a = eval(model)
                     ft_loss.append(l)
