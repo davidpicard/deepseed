@@ -13,8 +13,8 @@ batch_size_ft = 64
 v_batch_size = 50
 epoch = 1
 ft_epoch = 2
-max_train = 2000
-max_train_ft = 22000
+max_train = 200
+max_train_ft = 2200
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 torch.backends.cudnn.benchmark = True
@@ -114,7 +114,7 @@ if not args.eval_pretrained:
 
             print('{}/{} loss: {:5.02f} acc: {:5.02f} in {:6.01f}'.format(i, n_train, torch.stack(running_loss).mean(), 100*torch.stack(running_acc).mean(), time.time()-start), end='\r')
 
-            if i%1000 == 0:
+            if i%100 == 0:
                 print()
                 l, a = eval(model)
                 tr_loss.append(l)
@@ -165,7 +165,7 @@ if not args.eval_pretrained:
                                                                           100 * torch.stack(running_acc).mean(),
                                                                           time.time() - start), end='\r')
 
-            if i % 2000 == 0:
+            if i % 200 == 0:
                 print()
                 l, a = eval(model)
                 ft_loss.append(l)
