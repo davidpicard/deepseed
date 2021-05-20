@@ -8,13 +8,13 @@ from torch.utils.data import DataLoader
 from datasets import *
 from loss import *
 
-batch_size = 256
+batch_size = 128
 batch_size_ft = 64
 v_batch_size = 50
 epoch = 1
 ft_epoch = 2
 max_train = 2000
-max_train_ft = 22000
+max_train_ft = 24000
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 torch.backends.cudnn.benchmark = True
@@ -51,15 +51,16 @@ args = parser.parse_args()
 data = []
 
 train, val = build_imagenet(args.data_dir)
-train_ds = DataLoader(train, batch_size=batch_size, num_workers=10, shuffle=True)
 val_ds = DataLoader(val, batch_size=v_batch_size, num_workers=10)
-n_train = len(train_ds)
 n_val = len(val_ds)
 
 for s in range(args.seed, args.seed + args.nb_seeds):
     print('doing seed {}'.format(s))
     torch.manual_seed(s)
     np.random.seed(s)
+
+    train_ds = DataLoader(train, batch_size=batch_size, num_workers=10, shuffle=True)
+    n_train = len(train_ds)
 
     tr_loss = []
     tr_acc = []
