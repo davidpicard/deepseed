@@ -142,13 +142,12 @@ for s in range(args.seed, args.seed + args.nb_seeds):
 
         # new optim and sched
         optimizer = optim.SGD(model.parameters(), lr=0.0005, momentum=0.9, nesterov=True, weight_decay=0.0001)
-        sched = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=n_train//2000, eta_min=0.0001)
+        sched = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=max_train_ft//2000, eta_min=0.0001)
 
         i = 1
         for e in range(ft_epoch):
             running_loss = []
             running_acc = []
-            start = time.time()
             for imgs, lbls in train_ds:
                 imgs = imgs.to(device)
                 lbls = lbls.to(device)
