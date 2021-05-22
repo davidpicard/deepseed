@@ -99,7 +99,7 @@ for s in range(args.seed, args.seed + args.nb_seeds):
 
                 outputs = model(imgs)
                 loss = criterion(outputs, lbls)
-                loss = loss
+                loss = loss + criterion2(outputs, lbls)
 
                 loss.backward()
                 optimizer.step()
