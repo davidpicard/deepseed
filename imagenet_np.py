@@ -56,9 +56,6 @@ for s in range(args.seed, args.seed + args.nb_seeds):
     torch.manual_seed(s)
     np.random.seed(s)
 
-    train_ds = DataLoader(train, batch_size=batch_size, num_workers=10, shuffle=True)
-    n_train = len(train_ds)
-
     tr_loss = []
     tr_acc = []
     ft_loss = []
