@@ -10,7 +10,7 @@ from loss import *
 
 batch_size_ft = 128
 v_batch_size = 50
-ft_epoch = 25
+ft_epoch = 10
 max_train_ft = 100000
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
@@ -122,6 +122,9 @@ for s in range(args.seed, args.seed + args.nb_seeds):
                 if i >= max_train_ft:
                     break
                 i += 1
+
+            if i >= max_train_ft:
+                break
 
     # eval
     if args.eval_pretrained:
