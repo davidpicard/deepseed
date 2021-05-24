@@ -10,8 +10,8 @@ from loss import *
 
 batch_size_ft = 128
 v_batch_size = 50
-ft_epoch = 10
-max_train_ft = 100000
+ft_epoch = 15
+max_train_ft = 150000
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 torch.backends.cudnn.benchmark = True
