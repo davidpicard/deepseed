@@ -8,7 +8,7 @@ from torch.utils.data import DataLoader
 from datasets import *
 from loss import *
 
-batch_size_ft = 192
+batch_size_ft = 384
 v_batch_size = 50
 ft_epoch = 15
 max_train_ft = 150000
