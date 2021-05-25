@@ -98,12 +98,12 @@ class Augment(nn.Module):
         x = self.transforms(x)
         return x
 
-def build_imagenet(data_dir, device="cuda"):
+def build_imagenet(data_dir, device="cuda", size=224):
     normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406],
                                      std=[0.229, 0.224, 0.225])
 
     transform_train = transforms.Compose([
-        transforms.RandomResizedCrop(224),
+        transforms.RandomResizedCrop(size),
         transforms.RandomHorizontalFlip(),
         transforms.ToTensor(),
         normalize
@@ -111,7 +111,7 @@ def build_imagenet(data_dir, device="cuda"):
 
     transform_val = transforms.Compose([
         transforms.Resize(256),
-        transforms.CenterCrop(224),
+        transforms.CenterCrop(size),
         transforms.ToTensor(),
         normalize
     ])
