@@ -8,7 +8,7 @@ from torch.utils.data import DataLoader
 from datasets import *
 from loss import *
 
-batch_size_ft = 384
+batch_size_ft = 256
 v_batch_size = 50
 ft_epoch = 15
 max_train_ft = 150000
@@ -71,7 +71,7 @@ for s in range(args.seed, args.seed + args.nb_seeds):
 
     if not args.eval_pretrained:
 
-        criterion2 = CrossEntropyLabelSmooth(num_classes=1000, epsilon=0.2)
+        criterion2 = CrossEntropyLabelSmooth(num_classes=1000, epsilon=0.1)
 
         print('Fine tuning all layers')
         start = time.time()
@@ -85,7 +85,7 @@ for s in range(args.seed, args.seed + args.nb_seeds):
 
         # new optim and sched
         # optimizer = optim.SGD(model.parameters(), lr=0.02, momentum=0.9, nesterov=True, weight_decay=0.00001)
-        optimizer = optim.Adam(model.parameters(), lr=0.03, weight_decay=0.0001)
+        optimizer = optim.Adam(model.parameters(), lr=0.1, weight_decay=0.0002)
         sched = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=max_train_ft//2000, eta_min=0.001)
 
         i = 1
