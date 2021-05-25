@@ -85,7 +85,7 @@ for s in range(args.seed, args.seed + args.nb_seeds):
 
         # new optim and sched
         # optimizer = optim.SGD(model.parameters(), lr=0.02, momentum=0.9, nesterov=True, weight_decay=0.00001)
-        optimizer = optim.Adam(model.parameters(), lr=0.01, weight_decay=0.0001)
+        optimizer = optim.Adam(model.parameters(), lr=0.03, weight_decay=0.0001)
         sched = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=max_train_ft//2000, eta_min=0.001)
 
         i = 1
