@@ -1,4 +1,6 @@
 import json
+
+import torch.optim.lr_scheduler
 from torch import optim
 import time
 import argparse
@@ -10,8 +12,8 @@ from loss import *
 
 batch_size_ft = 256
 v_batch_size = 50
-ft_epoch = 15
-max_train_ft = 150000
+ft_epoch = 30
+max_train_ft = 140000
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 torch.backends.cudnn.benchmark = True
@@ -84,9 +86,10 @@ for s in range(args.seed, args.seed + args.nb_seeds):
             p.requires_grad = True
 
         # new optim and sched
-        optimizer = optim.SGD(model.parameters(), lr=0.02, momentum=0.9, nesterov=True, weight_decay=0.00001)
+        optimizer = optim.SGD(model.parameters(), lr=0.1, momentum=0.9, nesterov=True, weight_decay=0.00001)
         # optimizer = optim.Adam(model.parameters(), lr=0.1, weight_decay=0.0002)
         sched = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=max_train_ft//2000, eta_min=0.001)
+        sched = torch.optim.lr_scheduler.StepLR(optimizer, step_size=30)
 
         i = 1
         for e in range(ft_epoch):
