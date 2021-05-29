@@ -62,8 +62,6 @@ for s in range(args.seed, args.seed + args.nb_seeds):
     torch.manual_seed(s)
     np.random.seed(s)
 
-    train_ds = DataLoader(train, batch_size=batch_size, num_workers=10, shuffle=True)
-    n_train = len(train_ds)
 
     tr_loss = []
     tr_acc = []
@@ -73,9 +71,9 @@ for s in range(args.seed, args.seed + args.nb_seeds):
     # build model
 
     resnet50 = torch.hub.load('facebookresearch/dino:main', 'dino_resnet50')
-    torchsummaryX.summary(resnet50, np.zeros(3, 224, 224))
+    torchsummaryX.summary(resnet50, np.zeros((3, 224, 224)))
     model = nn.Sequential(OrderedDict([('resnet50', resnet50), ('fc', nn.Linear(2048, 1000, bias=True))]))
-    torchsummaryX.summary(model, np.zeros(3, 224, 224))
+    torchsummaryX.summary(model, np.zeros((3, 224, 224)))
 
     for p in model.parameters():
         p.requires_grad = False
@@ -85,6 +83,8 @@ for s in range(args.seed, args.seed + args.nb_seeds):
 
     model.to(device)
 
+    train_ds = DataLoader(train, batch_size=batch_size, num_workers=10, shuffle=True)
+    n_train = len(train_ds)
 
     # optimization hparams
     criterion = nn.CrossEntropyLoss()
