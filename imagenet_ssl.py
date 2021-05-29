@@ -15,7 +15,7 @@ batch_size = 128
 batch_size_ft = 128
 v_batch_size = 50
 epoch = 1
-ft_epoch = 2
+ft_epoch = 50
 max_train = 4000
 max_train_ft = 24000
 
