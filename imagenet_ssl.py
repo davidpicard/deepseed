@@ -54,7 +54,7 @@ args = parser.parse_args()
 data = []
 
 train, val = build_imagenet(args.data_dir)
-val_ds = DataLoader(val, batch_size=v_batch_size, num_workers=10)
+val_ds = DataLoader(val, batch_size=v_batch_size, num_workers=10, pin_memory=True)
 n_val = len(val_ds)
 
 for s in range(args.seed, args.seed + args.nb_seeds):
