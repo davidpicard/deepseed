@@ -11,8 +11,8 @@ from torch.utils.data import DataLoader
 from datasets import *
 from loss import *
 
-batch_size = 128
-batch_size_ft = 64
+batch_size = 256
+batch_size_ft = 128
 v_batch_size = 50
 epoch = 1
 ft_epoch = 2
@@ -70,9 +70,11 @@ for s in range(args.seed, args.seed + args.nb_seeds):
 
     # build model
 
-    resnet50 = torch.hub.load('facebookresearch/dino:main', 'dino_resnet50')
-    torchsummaryX.summary(resnet50, torch.zeros((1, 3, 224, 224)))
-    model = nn.Sequential(OrderedDict([('resnet50', resnet50), ('fc', nn.Linear(2048, 1000, bias=True))]))
+    model = torch.hub.load('facebookresearch/dino:main', 'dino_resnet50')
+    model.fc = nn.Linear(2048, 1000)
+    if not args.eval_pretrained:
+        torch.nn.init.kaiming_uniform_(model.fc.weight)
+        torch.nn.init.normal_(model.fc.bias)
     torchsummaryX.summary(model, torch.zeros((1, 3, 224, 224)))
 
     for p in model.parameters():
