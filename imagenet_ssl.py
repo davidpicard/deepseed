@@ -71,9 +71,9 @@ for s in range(args.seed, args.seed + args.nb_seeds):
     # build model
 
     resnet50 = torch.hub.load('facebookresearch/dino:main', 'dino_resnet50')
-    torchsummaryX.summary(resnet50, torch.zeros((3, 224, 224)))
+    torchsummaryX.summary(resnet50, torch.zeros((1, 3, 224, 224)))
     model = nn.Sequential(OrderedDict([('resnet50', resnet50), ('fc', nn.Linear(2048, 1000, bias=True))]))
-    torchsummaryX.summary(model, torch.zeros((3, 224, 224)))
+    torchsummaryX.summary(model, torch.zeros((1, 3, 224, 224)))
 
     for p in model.parameters():
         p.requires_grad = False
