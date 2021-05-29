@@ -85,7 +85,7 @@ for s in range(args.seed, args.seed + args.nb_seeds):
 
     model.to(device)
 
-    train_ds = DataLoader(train, batch_size=batch_size, num_workers=10, shuffle=True)
+    train_ds = DataLoader(train, batch_size=batch_size, num_workers=10, shuffle=True, pin_memory=True)
     n_train = len(train_ds)
 
     # optimization hparams
