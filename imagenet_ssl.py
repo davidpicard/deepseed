@@ -75,7 +75,7 @@ for s in range(args.seed, args.seed + args.nb_seeds):
     if not args.eval_pretrained:
         torch.nn.init.kaiming_uniform_(model.fc.weight)
         torch.nn.init.normal_(model.fc.bias)
-    torchsummaryX.summary(model, torch.zeros((1, 3, 224, 224)))
+    # torchsummaryX.summary(model, torch.zeros((1, 3, 224, 224)))
 
     for p in model.parameters():
         p.requires_grad = False
