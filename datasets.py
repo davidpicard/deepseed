@@ -110,7 +110,7 @@ def build_imagenet(data_dir, device="cuda", size=224):
     ])
 
     transform_val = transforms.Compose([
-        transforms.Resize(int(1.2*size)),
+        transforms.Resize(int(1.14*size)),
         transforms.CenterCrop(size),
         transforms.ToTensor(),
         normalize
