@@ -187,6 +187,9 @@ for s in range(args.seed, args.seed + args.nb_seeds):
                     break
                 i += 1
 
+            if i >= max_train_ft:
+                break
+
     # eval
     if args.eval_pretrained:
         eval(model)
