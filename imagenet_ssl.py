@@ -71,6 +71,7 @@ for s in range(args.seed, args.seed + args.nb_seeds):
     # build model
 
     model = torch.hub.load('facebookresearch/dino:main', 'dino_resnet50')
+    # model = torch.hub.load('facebookresearch/semi-supervised-ImageNet1K-models', 'resnet50_ssl')
     model.fc = nn.Linear(2048, 1000)
     if not args.eval_pretrained:
         torch.nn.init.kaiming_uniform_(model.fc.weight)
@@ -85,7 +86,7 @@ for s in range(args.seed, args.seed + args.nb_seeds):
 
     model.to(device)
 
-    train_ds = DataLoader(train, batch_size=batch_size, num_workers=10, shuffle=True, pin_memory=True)
+    train_ds = DataLoader(train, batch_size=batch_size, num_workers=12, shuffle=True, pin_memory=True)
     n_train = len(train_ds)
 
     # optimization hparams
@@ -94,8 +95,8 @@ for s in range(args.seed, args.seed + args.nb_seeds):
     if not args.eval_pretrained:
 
         criterion2 = CrossEntropyLabelSmooth(num_classes=1000, epsilon=0.1)
-        optimizer = optim.SGD(model.parameters(), lr=0.02, momentum=0.9, nesterov=True, weight_decay=0.0001)
-        sched = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=epoch*n_train//1000, eta_min=0.001)
+        optimizer = optim.SGD(model.parameters(), lr=0.05, momentum=0.9, nesterov=True, weight_decay=0.0001)
+        sched = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=max_train//1000, eta_min=0.001)
 
         # training loop
         print('Training last layer')
