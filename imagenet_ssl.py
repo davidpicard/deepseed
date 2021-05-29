@@ -11,7 +11,7 @@ from torch.utils.data import DataLoader
 from datasets import *
 from loss import *
 
-batch_size = 256
+batch_size = 128
 batch_size_ft = 128
 v_batch_size = 50
 epoch = 1
