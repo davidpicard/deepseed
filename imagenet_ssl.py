@@ -101,7 +101,7 @@ for s in range(args.seed, args.seed + args.nb_seeds):
     if not args.eval_pretrained:
 
         criterion2 = CrossEntropyLabelSmooth(num_classes=1000, epsilon=0.1)
-        optimizer = optim.SGD(model.parameters(), lr=0.1, momentum=0.9, nesterov=True, weight_decay=0.0001)
+        optimizer = optim.SGD(model.parameters(), lr=0.01, momentum=0.9, nesterov=True, weight_decay=0.0001)
         sched = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=max_train, eta_min=0.001)
 
         # training loop
