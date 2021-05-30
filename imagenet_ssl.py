@@ -79,7 +79,7 @@ for s in range(args.seed, args.seed + args.nb_seeds):
     # vit
     model = torch.hub.load('facebookresearch/dino:main', 'dino_vits16')
     # torchsummaryX.summary(model, torch.zeros((1, 3, 224, 224)))
-    model = nn.Sequential(model, nn.Linear(384, 1000))
+    model = nn.Sequential(OrderedDict([('vit', model), ('fc', nn.Linear(384, 1000))]))
     torchsummaryX.summary(model, torch.zeros((1, 3, 224, 224)))
 
     for p in model.parameters():
