@@ -17,7 +17,7 @@ v_batch_size = 50
 epoch = 1
 ft_epoch = 50
 max_train = 2000
-max_train_ft = 24000
+max_train_ft = 26000
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 torch.backends.cudnn.benchmark = True
@@ -154,7 +154,7 @@ for s in range(args.seed, args.seed + args.nb_seeds):
             p.requires_grad = True
 
         # new optim and sched
-        optimizer = optim.SGD(model.parameters(), lr=0.0002, momentum=0.9, nesterov=True, weight_decay=0.0001)
+        optimizer = optim.SGD(model.parameters(), lr=0.0001, momentum=0.9, nesterov=True, weight_decay=0.0001)
         sched = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=max_train_ft, eta_min=0.0001)
 
         i = 1
