@@ -80,9 +80,9 @@ for s in range(args.seed, args.seed + args.nb_seeds):
     model = torch.hub.load('facebookresearch/dino:main', 'dino_vits16')
     # torchsummaryX.summary(model, torch.zeros((1, 3, 224, 224)))
     model = nn.Sequential(OrderedDict([('vit', model), ('fc', nn.Linear(384, 1000))]))
-    model.fc.weight.data.normal_(mean=0.0, std=0.01)
+    model.fc.weight.data.normal_(mean=0.0, std=0.001)
     model.fc.bias.data.zero_()
-    torchsummaryX.summary(model, torch.zeros((1, 3, 224, 224)))
+    # torchsummaryX.summary(model, torch.zeros((1, 3, 224, 224)))
 
     for p in model.parameters():
         p.requires_grad = False
