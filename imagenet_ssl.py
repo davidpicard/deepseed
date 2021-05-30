@@ -70,15 +70,17 @@ for s in range(args.seed, args.seed + args.nb_seeds):
 
     # build model
 
+    # r50
     # model = torch.hub.load('facebookresearch/dino:main', 'dino_resnet50')
+    # model.fc = nn.Linear(2048, 1000)
+    # if not args.eval_pretrained:
+    #     torch.nn.init.kaiming_uniform_(model.fc.weight)
+    #     torch.nn.init.normal_(model.fc.bias)
+    # vit
     model = torch.hub.load('facebookresearch/dino:main', 'dino_vits16')
-    torchsummaryX.summary(model, torch.zeros((1, 3, 224, 224)))
-    # model = torch.hub.load('facebookresearch/semi-supervised-ImageNet1K-models', 'resnet50_ssl')
-    model.fc = nn.Linear(2048, 1000)
-    if not args.eval_pretrained:
-        torch.nn.init.kaiming_uniform_(model.fc.weight)
-        torch.nn.init.normal_(model.fc.bias)
     # torchsummaryX.summary(model, torch.zeros((1, 3, 224, 224)))
+    model = nn.Sequential(model, nn.Linear(384, 1000))
+    torchsummaryX.summary(model, torch.zeros((1, 3, 224, 224)))
 
     for p in model.parameters():
         p.requires_grad = False
