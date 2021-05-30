@@ -70,7 +70,9 @@ for s in range(args.seed, args.seed + args.nb_seeds):
 
     # build model
 
-    model = torch.hub.load('facebookresearch/dino:main', 'dino_resnet50')
+    # model = torch.hub.load('facebookresearch/dino:main', 'dino_resnet50')
+    model = torch.hub.load('facebookresearch/dino:main', 'dino_vits16')
+    torchsummaryX.summary(model, torch.zeros((1, 3, 224, 224)))
     # model = torch.hub.load('facebookresearch/semi-supervised-ImageNet1K-models', 'resnet50_ssl')
     model.fc = nn.Linear(2048, 1000)
     if not args.eval_pretrained:
